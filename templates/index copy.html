@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Analisis Kinerja Komparatif GPT-4.1 dan Gemini 2.5 Flash Menggunakan Kerangka Evaluasi Multi-Metrik untuk Katalogisasi E-commerce</title>
+    <meta name="description" content="Analisis kinerja komparatif GPT-4.1 dan Gemini 2.5 Flash dalam konteks katalogisasi e-commerce, dengan fokus pada metrik seperti keterbacaan, keragaman leksikal, dan sentimen.">
+    <meta name="keywords" content="GPT-4.1, Gemini 2.5 Flash, e-commerce, katalogisasi, analisis kinerja, keterbacaan, keragaman leksikal, sentimen">
+    <meta name="og:title" content="Analisis Kinerja Komparatif GPT-4.1 dan Gemini 2.5 Flash">
+    <meta name="og:description" content="Analisis kinerja komparatif GPT-4.1 dan Gemini 2.5 Flash dalam konteks katalogisasi e-commerce, dengan fokus pada metrik seperti keterbacaan, keragaman leksikal, dan sentimen.">
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b; /* slate-800 */
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569; /* slate-600 */
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-slate-900">
+    <section class="container mx-auto p-4">
+        <!-- Main chat container -->
+        <div class="flex h-[97vh] w-full flex-col">
+            <!-- Title -->
+            <div class="mb-4 text-center">
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Analisis Kinerja Katalogisasi E-commerce</h1>
+                <p class="text-sm text-slate-600 dark:text-slate-400">Unggah gambar produk untuk membandingkan hasil dari GPT-4.1 dan Gemini 2.5 Flash.</p>
+            </div>
+            <!-- Chat Messages Container -->
+            <div
+                id="chat-container"
+                class="flex-1 overflow-y-auto rounded-xl bg-slate-200 p-4 text-sm leading-6 text-slate-900 dark:bg-slate-800 dark:text-slate-300 sm:text-base sm:leading-7 custom-scrollbar"
+            >
+                <!-- Initial placeholder content. Will be replaced on form submission. -->
+                <div id="initial-message" class="flex justify-center items-center h-full">
+                    <div class="text-center text-slate-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p class="mt-2">Hasil analisis akan muncul di sini.</p>
+                        <p class="text-xs">Silakan pilih file gambar dan klik 'Kirim'.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form for file input -->
+            <form id="analysis-form" class="mt-4">
+                <label for="file-input" class="sr-only">Unggah file Anda</label>
+                <div class="relative">
+                    <input type="file" name="file-input" id="file-input" class="block w-full resize-none rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 p-4 pr-28 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base" placeholder="Pilih file gambar..." required accept="image/*">
+                    <button
+                        type="submit"
+                        class="absolute bottom-2.5 right-2.5 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-slate-100 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:text-base"
+                    >
+                        Kirim
+                        <span class="sr-only">Kirim file</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+<script>
+    // --- ELEMENTS ---
+    const form = document.getElementById('analysis-form');
+    const fileInput = document.getElementById('file-input');
+    const chatContainer = document.getElementById('chat-container');
+
+    // --- SAMPLE DATA ---
+    const sampleResponse = {
+      "response_gemini": {
+        "product_name": "Nipis Madu Lime Honey Soda Drink - Refreshing Green Bottle",
+        "tags": ["nipis madu", "lime soda", "honey drink", "carbonated beverage", "soft drink", "refreshing drink", "green soda", "bottled drink", "non-alcoholic", "sweet drink", "tropical flavor", "soda"],
+        "category_suggestion": "Food & Beverage > Beverages > Carbonated Soft Drinks",
+        "seo_description": "Indulge in the vibrant and zesty taste of Nipis Madu Lime Honey Soda, a truly unique and delightful carbonated beverage. This refreshing drink perfectly blends the tangy notes of fresh lime with the smooth, natural sweetness of honey, creating an unforgettable flavor profile. Presented in a convenient green bottle, this Nipis Madu lime soda is ideal for quenching your thirst on a hot day or enjoying as a flavorful accompaniment to any meal. The crisp carbonation adds a playful fizz, making every sip a burst of invigorating refreshment. Crafted with high-quality ingredients, Nipis Madu ensures a consistent and enjoyable experience every time. Whether you're looking for a non-alcoholic option for your next gathering or simply craving a sweet and zesty treat, this honey drink delivers. It’s a perfect alternative to traditional soft drinks, offering a harmonious balance of citrus and sweetness. Its distinctive flavor sets it apart, making it a must-try for soda enthusiasts and those exploring new tastes. Enjoy it chilled for the ultimate revitalizing sensation. Add Nipis Madu Lime Honey Soda to your cart today and elevate your refreshment experience!"
+      },
+      "response_gpt": {
+        "product_name": "Lime Honey Soda Supercemilan Refreshing Beverage - 350ml",
+        "tags": ["lime soda", "honey drink", "supercemilan beverage", "refreshing soda", "sweet lime soda", "carbonated drink", "lime honey soda", "summer drink", "indonesian beverage", "cooling drink"],
+        "category_suggestion": "Food & Beverage > Drinks > Soft Drinks",
+        "seo_description": "Experience a perfect blend of freshness and sweetness with Supercemilan's Lime Honey Soda. This unique beverage combines zesty lime and natural honey to deliver a deliciously refreshing carbonated drink that invigorates your senses. Perfect for hot days, this honey drink offers both a thirst-quenching and energizing experience with every sip. The lime soda bubbles add an extra layer of excitement, making it an ideal choice for social gatherings, picnics, or simply relaxing at home. Made from high-quality ingredients, Supercemilan’s lime honey soda is a must-try for those seeking exotic and cooling drink alternatives. Enjoy the sweet lime soda taste, and elevate your refreshment moments with this delightful soft drink. Don’t miss out—order now and treat yourself to the irresistible flavor of lime honey soda!"
+      },
+      "tabel_perbandingan": {
+        "GPT-4.1": {
+          "Nama (Jumlah Karakter)": 56.0, "Nama (Jumlah Kata)": 8.0, "Jumlah Tag": 10.0, "Tag (Jumlah Sama)": 2.0, "Kategori (Kedalaman)": 3.0, "Deskripsi (Jumlah Kata)": 124.0, "Deskripsi (Jumlah Kalimat)": 7.0, "Deskripsi (Rata-rata Kata/Kalimat)": 17.71, "Keterbacaan (Flesch Ease)": 40.12, "Keterbacaan (Grade Level)": 12.06, "Keragaman Leksikal (TTR)": 0.71, "Sentimen (Skor Compound)": 0.99, "Jumlah Kesalahan Gramatikal": 2.0
+        },
+        "Gemini 2.5 Flash": {
+          "Nama (Jumlah Karakter)": 58.0, "Nama (Jumlah Kata)": 10.0, "Jumlah Tag": 12.0, "Tag (Jumlah Sama)": 2.0, "Kategori (Kedalaman)": 3.0, "Deskripsi (Jumlah Kata)": 182.0, "Deskripsi (Jumlah Kalimat)": 10.0, "Deskripsi (Rata-rata Kata/Kalimat)": 18.2, "Keterbacaan (Flesch Ease)": 38.69, "Keterbacaan (Grade Level)": 12.38, "Keragaman Leksikal (TTR)": 0.68, "Sentimen (Skor Compound)": 1.0, "Jumlah Kesalahan Gramatikal": 8.0
+        }
+      }
+    };
+
+    // --- TEMPLATE FUNCTIONS ---
+
+    /**
+     * Creates the user's prompt message display.
+     * @param {string} fileName - The name of the uploaded file.
+     * @returns {string} - The HTML string for the user prompt.
+     */
+    const createUserPromptTemplate = (fileName) => `
+        <div class="flex flex-row px-2 py-4 sm:px-4 items-start">
+            <img class="mr-2 flex h-8 w-8 rounded-full sm:mr-4" src="https://dummyimage.com/256x256/363536/ffffff&text=U" alt="User"/>
+            <div class="flex flex-col max-w-3xl">
+                <p class="font-semibold">Analisis untuk file:</p>
+                <p class="bg-white dark:bg-slate-700 rounded-md p-2 mt-1 text-blue-600 dark:text-blue-400 text-sm">${fileName}</p>
+            </div>
+        </div>`;
+
+    /**
+     * Creates the AI model's response card.
+     * @param {object} responseData - The data for the specific model (GPT or Gemini).
+     * @param {string} modelName - The name of the model ('GPT-4.1' or 'Gemini 2.5 Flash').
+     * @param {string} avatarUrl - The URL for the model's avatar.
+     * @returns {string} - The HTML string for the AI response card.
+     */
+    const createResponseTemplate = (responseData, modelName, avatarUrl) => `
+        <div class="mb-6 flex flex-col rounded-xl bg-slate-50 p-4 dark:bg-slate-900/70 sm:p-6">
+            <div class="flex items-start">
+                 <img class="mr-2 flex h-8 w-8 rounded-full sm:mr-4" src="${avatarUrl}" alt="${modelName}"/>
+                 <div class="flex-1">
+                     <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">${modelName}</h3>
+                     <div class="mt-3 space-y-4 text-slate-700 dark:text-slate-300">
+                        <div>
+                            <h4 class="font-semibold text-sm uppercase text-slate-500 dark:text-slate-400">Nama Produk</h4>
+                            <p class="mt-1">${responseData.product_name}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm uppercase text-slate-500 dark:text-slate-400">Saran Kategori</h4>
+                            <p class="mt-1">${responseData.category_suggestion}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm uppercase text-slate-500 dark:text-slate-400">Tag</h4>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                ${responseData.tags.map(tag => `<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full dark:bg-blue-900 dark:text-blue-300">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm uppercase text-slate-500 dark:text-slate-400">Deskripsi SEO</h4>
+                            <p class="mt-1 leading-relaxed">${responseData.seo_description}</p>
+                        </div>
+                     </div>
+                 </div>
+            </div>
+        </div>`;
+
+    /**
+     * Creates the comparison table.
+     * @param {object} tableData - The comparison data object.
+     * @returns {string} - The HTML string for the comparison table.
+     */
+    const createComparisonTableTemplate = (tableData) => {
+        const metrics = Object.keys(tableData["GPT-4.1"]);
+        let tableRows = '';
+        metrics.forEach(metric => {
+            const gptValue = tableData["GPT-4.1"][metric];
+            const geminiValue = tableData["Gemini 2.5 Flash"][metric];
+            const isGptBetter = gptValue > geminiValue;
+            // Specific condition for grammatical errors where lower is better
+            if (metric === "Jumlah Kesalahan Gramatikal" || metric === "Keterbacaan (Grade Level)") {
+                 const isGptBetter = gptValue < geminiValue;
+                 tableRows += `
+                    <tr class="border-b border-slate-300 dark:border-slate-700">
+                        <td class="py-3 px-4 text-slate-600 dark:text-slate-400 font-medium">${metric}</td>
+                        <td class="py-3 px-4 text-center ${isGptBetter ? 'font-bold text-green-600 dark:text-green-400' : ''}">${gptValue}</td>
+                        <td class="py-3 px-4 text-center ${!isGptBetter ? 'font-bold text-green-600 dark:text-green-400' : ''}">${geminiValue}</td>
+                    </tr>`;
+            } else {
+                 const isGptBetter = gptValue > geminiValue;
+                 tableRows += `
+                    <tr class="border-b border-slate-300 dark:border-slate-700">
+                        <td class="py-3 px-4 text-slate-600 dark:text-slate-400 font-medium">${metric}</td>
+                        <td class="py-3 px-4 text-center ${isGptBetter ? 'font-bold text-green-600 dark:text-green-400' : ''}">${gptValue}</td>
+                        <td class="py-3 px-4 text-center ${!isGptBetter ? 'font-bold text-green-600 dark:text-green-400' : ''}">${geminiValue}</td>
+                    </tr>`;
+            }
+        });
+
+        return `
+            <div class="mb-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-900/70 sm:p-6">
+                <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200 mb-4">Tabel Perbandingan Metrik</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-100 dark:bg-slate-800 text-xs uppercase text-slate-700 dark:text-slate-300">
+                            <tr>
+                                <th class="py-3 px-4">Metrik</th>
+                                <th class="py-3 px-4 text-center">GPT-4.1</th>
+                                <th class="py-3 px-4 text-center">Gemini 2.5 Flash</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                </div>
+                 <p class="text-xs text-slate-500 mt-4 dark:text-slate-400">
+                    <span class="font-bold text-green-600 dark:text-green-400">Hijau</span> menandakan skor yang lebih baik untuk metrik tersebut.
+                </p>
+            </div>`;
+    };
+
+    // --- EVENT LISTENER ---
+    form.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent actual form submission
+
+        // Check if a file is selected
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alert('Silakan pilih file terlebih dahulu.');
+            return;
+        }
+
+        const fileName = fileInput.files[0].name;
+
+        // Clear the initial message or previous results
+        chatContainer.innerHTML = '';
+        
+        // Show loading spinner
+        chatContainer.innerHTML = `
+            <div class="flex justify-center items-center h-full">
+                <div class="text-center text-slate-500">
+                     <svg class="animate-spin -ml-1 mr-3 h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="mt-3">Menganalisis gambar dan menghasilkan data...</p>
+                </div>
+            </div>`;
+
+
+        // Simulate API call delay
+        setTimeout(() => {
+            // Build the new chat content
+            const userPromptHTML = createUserPromptTemplate(fileName);
+            const gptResponseHTML = createResponseTemplate(sampleResponse.response_gpt, 'GPT-4.1', 'https://dummyimage.com/256x256/17917a/ffffff&text=G');
+            const geminiResponseHTML = createResponseTemplate(sampleResponse.response_gemini, 'Gemini 2.5 Flash', 'https://dummyimage.com/256x256/354ea1/ffffff&text=G');
+            const comparisonTableHTML = createComparisonTableTemplate(sampleResponse.tabel_perbandingan);
+
+            // Assemble the final HTML
+            const finalHTML = `
+                ${userPromptHTML}
+                ${comparisonTableHTML}
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    ${gptResponseHTML}
+                    ${geminiResponseHTML}
+                </div>
+            `;
+            
+            // Render the new content
+            chatContainer.innerHTML = finalHTML;
+            
+             // Scroll to the top of the chat container to show the latest result
+            chatContainer.scrollTop = 0;
+
+        }, 1500); // 1.5 second delay to simulate processing
+    });
+
+</script>
+</body>
+</html>
+
